@@ -1,10 +1,10 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const { registerValidation, loginValidation } = require('../routes/verifyToken');
+const { registerValidation, loginValidation } = require('../validation/validationJoi');
 
 //REGISTER
-router.post('/register', async (req, res) => {
+exports.register_post = async (req, res) => {
     //VALIDATE USER
     const { error } = registerValidation(req.body);
     if(error) return res.status(400).send(error.details[0].message);
@@ -28,10 +28,10 @@ router.post('/register', async (req, res) => {
     } catch(err) {
         res.status(400).send(err);
     }
-});
+};
 
 //LOGIN
-router.post('/login', async (req,res) => {
+exports.login_post = async (req,res) => {
     //VALIDATE USER
     const { error } = loginValidation(req.body);
     if(error) return res.status(400).send(error.details[0].message);
@@ -48,4 +48,4 @@ router.post('/login', async (req,res) => {
     res.header('auth-token', token).send(token);
 
     //res.send('Login exitoso!');
-});
+};
