@@ -4,8 +4,7 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 
 //Importar rutas
-const authRoute = require('./routes/auth');
-const postRoute = require('./routes/posts');
+const apiRoute = require('./routes/api');
 
 //Conectar a MongoDB
 mongoose.set('strictQuery', false);
@@ -21,7 +20,6 @@ main().catch(err => console.log(err));
 app.use(express.json());
 
 //Route Middleware
-app.use('/api/user', authRoute);
-app.use('/api/posts', postRoute);
+app.use('/api', apiRoute);
 
 app.listen(3000, () => console.log('Server iniciado en port 3000'));
