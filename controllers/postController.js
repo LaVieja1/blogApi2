@@ -14,6 +14,20 @@ exports.all_posts = async(req, res) => {
     }
 }
 
+exports.single_post = async(req, res) => {
+    try {
+        let post = await Post.find({_id: req.params.postid})
+        //.populate('author', {user: 1, });
+
+        if (!post || post.length == 0) {
+            return res.status(404).json({message: 'No hay post con ese id'})
+        };
+        return res.status(200).json({post});
+    } catch(err) {
+        res.json({message: 'Post no existe'});
+    }
+}
+
 exports.create_post = async(req, res) => {
     const { error } = postValidation(req.body);
     if(error) return res.status(400).send(error.details[0].message);
@@ -37,16 +51,36 @@ exports.create_post = async(req, res) => {
     }
 }
 
-exports.single_post = async(req, res) => {
+exports.update_post = async(req, res, next) => {
     try {
-        let post = await Post.find({_id: req.params.postid})
-        //.populate('author', {user: 1, });
+        let post = await Post.findByIdAndUpdate(req.params.postid, {
+            title: req.body.title,
+            text: req.body.text,
+        });
 
-        if (!post || post.length == 0) {
-            return res.status(404).json({message: 'No hay post con ese id'})
-        };
-        return res.status(200).json({post});
+        if (!post) {
+            return res.status(404).json({err: `No hay posts con el id ${req.params.postid}`});
+        }
+
+        return res.status(200).json({message: `Post con el id ${req.params.postid} actualizado`, post: post });
     } catch(err) {
-        res.json({message: 'Post no existe'});
+        return next(err);
+    }
+};
+
+exports.delete_post = async (req, res, next) => {
+    try {
+        let post = await Post.findByIdAndDelete(req.params.postid);
+
+        if (!post) {
+            return res.status(404).json({err: `No hay posts con el id ${req.params.postid}`});
+        }
+
+        //Borrar comentarios
+        let deletedComments = await Comment.deleteMany({postId: req.params.postid});
+        res.status(200).json({message: `Post con el id ${req.params.postid} eliminado`, comments: deletedComments});
+
+    } catch(err) {
+        return next(err);
     }
 }
