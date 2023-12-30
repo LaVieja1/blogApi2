@@ -5,10 +5,10 @@ const { postValidation } = require('../validation/validationJoi');
 
 exports.all_posts = async(req, res) => {
     try {
-        let posts = await Post.find({}, {title: 1, text: 1, date: 1, comments: 1})
-        .populate('author', {user: 1, _id: 0});
+        let posts = await Post.find({}, {title: 1, text: 1, date: 1, comments: 1, author: 1})
+        //.populate('author', {user: 1,});
 
-        return res.status(200).json(posts);
+        return res.status(200).json({posts});
     } catch(err) {
         return res.status(400).json({message: 'No hay posts'});
     }
@@ -19,20 +19,34 @@ exports.create_post = async(req, res) => {
     if(error) return res.status(400).send(error.details[0].message);
 
     //Check if post is already in the database
-    const postExist = await Post.findOne({ name: req.body.title });
+    const postExist = await Post.findOne({ title: req.body.title });
     if(postExist) return res.status(400).send('Post ya existe');
 
     //Create new user
     const post = new Post({
         title: req.body.title,
         author: req.user._id,
-        date: new Date(),
+        date_formatted: new Date(),
         text: req.body.text,
     });
     try {
         const savedPost = await post.save();
         res.status(200).json({post, token: req.user})
     } catch(err) {
-        res.status(400).send(err);
+        res.status(400).json({err});
+    }
+}
+
+exports.single_post = async(req, res) => {
+    try {
+        let post = await Post.find({_id: req.params.postid})
+        //.populate('author', {user: 1, });
+
+        if (!post || post.length == 0) {
+            return res.status(404).json({message: 'No hay post con ese id'})
+        };
+        return res.status(200).json({post});
+    } catch(err) {
+        res.json({message: 'Post no existe'});
     }
 }

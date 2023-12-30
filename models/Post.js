@@ -9,7 +9,7 @@ const postSchema = new Schema({
     text: { type: String, required: true },
     comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
 },
-    { toJSON: { virtuals: true }, timestamps: true }
+    { toJSON: { virtuals: true }, timestamps: false }
 );
 
 postSchema.virtual('date_formatted').get(function () {
