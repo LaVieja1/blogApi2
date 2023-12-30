@@ -12,4 +12,7 @@ router.post('/login', userController.login_post);
 /* GET ALL POSTS */
 router.get('/posts', verifyToken, postController.all_posts);
 
+/*CREATE POST*/
+router.post('/posts', verifyToken, postController.create_post);
+
 module.exports = router;

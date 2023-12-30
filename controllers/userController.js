@@ -24,7 +24,8 @@ exports.register_post = async (req, res) => {
     });
     try {
         const savedUser = await user.save();
-        res.send({ user: user._id });
+        //res.send({ user: user._id });
+        res.status(200).json({user: user._id});
     } catch(err) {
         res.status(400).send(err);
     }
@@ -44,7 +45,7 @@ exports.login_post = async (req,res) => {
     if(!validPass) return res.status(400).send('Contraseña incorrecta');
 
     //Create and assign token
-    const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET, {expiresIn: '1d'});
+    const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET, {expiresIn: '7d'});
     res.header('auth-token', token).send(token);
 
     //res.send('Login exitoso!');
