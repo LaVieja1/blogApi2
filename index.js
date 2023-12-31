@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const cors = require('cors');
 require('dotenv').config();
 
 //Importar rutas
@@ -17,6 +18,7 @@ async function main() {
 main().catch(err => console.log(err));
 
 //Middleware
+app.use(cors());
 app.use(express.json());
 
 //Route Middleware
