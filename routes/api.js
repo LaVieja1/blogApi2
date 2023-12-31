@@ -40,7 +40,7 @@ router.get('/posts/:postid/comments', commentController.get_comments_post);
 /* CREATE COMMENT */
 router.post('/posts/:postid/comments', verifyToken, commentController.create_comment);
 
-
-
+/* DELETE COMMENT */
+router.delete('/posts/:postid/comments/:commentid', verifyToken, commentController.delete_comment);
 
 module.exports = router;

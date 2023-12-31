@@ -63,3 +63,22 @@ exports.create_comment = async (req, res, next) => {
         res.status(400).json({err});
     }
 }
+
+exports.delete_comment = async (req, res, next) => {
+    try {
+        let comment = await Comment.findByIdAndDelete({_id: req.params.commentid});
+
+        if (!comment) {
+            return res.status(401).json({message: `No hay un comentario con id ${req.params.commentid}`});
+        }
+
+        let deletedComment = await Post.findByIdAndUpdate(
+            {_id: req.params.postid},
+            {$pull: {comments: req.params.commentid}},
+        );
+
+        return res.status(200).json({message: `Eliminado comentario con id ${req.params.commentid} y removido del post ${req.params.postid}`, comment: comment, deletedComment});
+    } catch(err) {
+        return next(err);
+    }
+}
