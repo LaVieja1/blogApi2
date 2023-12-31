@@ -28,7 +28,19 @@ router.put('/posts/:postid', verifyToken, postController.update_post);
 router.delete('/posts/:postid', verifyToken, postController.delete_post);
 
 //COMMENTS
+/* GET ALL COMMENTS */
+router.get('/comments', commentController.get_all_comments);
+
+/* GET SINGLE COMMENT */
+router.get('/comments/:commentid', commentController.get_single_comment);
+
+/* GET ALL COMMENTS ON POST */
+router.get('/posts/:postid/comments', commentController.get_comments_post);
+
 /* CREATE COMMENT */
 router.post('/posts/:postid/comments', verifyToken, commentController.create_comment);
+
+
+
 
 module.exports = router;
