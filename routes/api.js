@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const userController = require('../controllers/userController');
 const postController = require('../controllers/postController');
+const commentController = require('../controllers/commentController');
 const verifyToken = require('../validation/verifyToken');
 
 //USER
@@ -25,5 +26,9 @@ router.put('/posts/:postid', verifyToken, postController.update_post);
 
 /* DELETE POST */
 router.delete('/posts/:postid', verifyToken, postController.delete_post);
+
+//COMMENTS
+/* CREATE COMMENT */
+router.post('/posts/:postid/comments', verifyToken, commentController.create_comment);
 
 module.exports = router;

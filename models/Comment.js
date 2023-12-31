@@ -12,7 +12,7 @@ const commentSchema = new Schema({
     user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     text: { type: String, required: true },
 },
-    { toJSON: { virtuals: true }, timestamps: true }
+    { toJSON: { virtuals: true }, timestamps: false }
 );
 
 commentSchema.virtual('date_formatted').get(function () {
