@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
+const helmet = require('helmet');
+const compression = require('compression');
 require('dotenv').config();
 
 //Importar rutas
@@ -19,7 +21,10 @@ main().catch(err => console.log(err));
 
 //Middleware
 app.use(cors());
+app.use(helmet());
+app.use(compression());
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 //Route Middleware
 app.use('/api', apiRoute);
