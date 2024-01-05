@@ -1,5 +1,7 @@
 const Post = require('../models/Post');
 const Comment = require('../models/Comment');
+const fs = require('fs');
+const path = require('path');
 const { postValidation } = require('../validation/validationJoi');
 
 exports.all_posts = async(req, res) => {
@@ -39,6 +41,12 @@ exports.create_post = async(req, res) => {
     const post = new Post({
         title: req.body.title,
         author: req.user._id,
+        image: {
+            data: fs.readFileSync(
+                path.join(__basedir + "/temp/uploads/" + req.file.filename)
+            ),
+            contentType: req.file.mimetype,
+        },
         date_formatted: new Date(),
         text: req.body.text,
     });
@@ -55,6 +63,12 @@ exports.update_post = async(req, res, next) => {
         let post = await Post.findByIdAndUpdate(req.params.postid, {
             title: req.body.title,
             text: req.body.text,
+            image: {
+                data: fs.readFileSync(
+                    path.join(__basedir + "/temp/uploads/" + req.file.filename)
+                ),
+                contentType: req.file.mimetype,
+            },
         });
 
         if (!post) {

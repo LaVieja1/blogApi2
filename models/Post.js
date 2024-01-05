@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 const postSchema = new Schema({
     title: { type: String, required: true, min: 1 },
     author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    image: {data: Buffer, contentType: String},
     date: { type: Date, default: Date.now, required: true },
     text: { type: String, required: true },
     comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],

@@ -5,6 +5,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const compression = require('compression');
 require('dotenv').config();
+global.__basedir = __dirname;
 
 //Importar rutas
 const apiRoute = require('./routes/api');
