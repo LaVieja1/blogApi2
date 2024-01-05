@@ -19,6 +19,10 @@ exports.single_post = async(req, res) => {
     try {
         let post = await Post.find({_id: req.params.postid})
         //.populate('author', {user: 1, });
+        let comments = await Comment.find({ postId: req.params.postid })
+        if (comments) {
+            post.comments = comments;
+        }
 
         if (!post || post.length == 0) {
             return res.status(404).json({message: 'No hay post con ese id'})
