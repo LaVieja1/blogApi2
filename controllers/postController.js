@@ -7,7 +7,7 @@ exports.all_posts = async(req, res) => {
         let posts = await Post.find({}, {title: 1, text: 1, date: 1, comments: 1, author: 1})
         //.populate('author', {user: 1,});
 
-        return res.status(200).json({posts});
+        return res.status(200).json(posts);
     } catch(err) {
         return res.status(400).json({message: 'No hay posts'});
     }
@@ -21,7 +21,7 @@ exports.single_post = async(req, res) => {
         if (!post || post.length == 0) {
             return res.status(404).json({message: 'No hay post con ese id'})
         };
-        return res.status(200).json({post});
+        return res.status(200).json(post);
     } catch(err) {
         res.json({message: 'Post no existe'});
     }

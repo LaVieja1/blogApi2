@@ -8,7 +8,7 @@ exports.get_comments_post = async (req, res, next) => {
         let comments = await Comment.find({postId: req.params.postid},)
         .populate('user', {user: 1});
 
-        return res.status(200).json({comments});
+        return res.status(200).json(comments);
     } catch(err) {
         return res.status(400).json({message: 'No hay comentarios en este post'});
     }
@@ -21,7 +21,7 @@ exports.get_all_comments = async (req, res, next) => {
             return res.status(400).json({message: 'No hay comentarios'});
         }
 
-        return res.status(200).json({comments});
+        return res.status(200).json(comments);
     } catch(err) {
         return next(err);
     }
@@ -33,7 +33,7 @@ exports.get_single_comment = async (req, res, next) => {
         if (!comment) {
             return res.status(404).json({message: `No existe comentario con id ${req.params.commentid}`});
         }
-        return res.status(200).json({comment});
+        return res.status(200).json(comment);
     } catch(err) {
         return next(err);
     }
